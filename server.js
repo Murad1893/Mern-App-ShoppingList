@@ -7,7 +7,6 @@ const cors = require('cors')
 const app = express();
 
 const uri = process.env.atlas
-const port = process.env.port
 
 const itemRouter = require('./routes/itemRouter')
 const path = require('path') //just for paths
@@ -44,6 +43,8 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 //start on port
+
+const port = process.env.PORT || process.env.port;
 app.listen(port, ()=>{
   console.log('Server listening to port: ' + port)
 })
