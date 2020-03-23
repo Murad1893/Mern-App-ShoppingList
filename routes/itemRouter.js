@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const item = require('../models/item')
+const auth = require('../middlware/auth')
 
 router.get('/', (req,res)=>{
   //we can use sort function in mongodb. In this case sort by date in descending order
@@ -10,7 +11,9 @@ router.get('/', (req,res)=>{
   })
 })
 
-router.post('/', (req,res)=>{
+//now we add authentication to the routes so that they are protected by an authentication
+//now private
+router.post('/', auth, (req,res)=>{
 
   item.create(req.body).then(item=>{
     res.json(item)
@@ -19,7 +22,8 @@ router.post('/', (req,res)=>{
   })
 })
 
-router.delete('/:id', (req,res)=>{
+//now this is private
+router.delete('/:id', auth, (req,res)=>{
   item.findByIdAndDelete({_id:req.params.id}, {
     name: req.body.name,
     date: req.body.date

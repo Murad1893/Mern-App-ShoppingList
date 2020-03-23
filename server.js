@@ -8,7 +8,6 @@ const app = express();
 
 const uri = process.env.atlas
 
-const itemRouter = require('./routes/itemRouter')
 const path = require('path') //just for paths
 
 //connect to mongodb
@@ -26,7 +25,9 @@ app.use(cors())
 app.use(express.json())
 
 //Routes
-app.use('/api/items', itemRouter) //routing
+app.use('/api/items', require('./routes/itemRouter')) //routing
+app.use('/api/users', require('./routes/userRouter'))
+app.use('/api/auth', require('./routes/authRouter'))
 
 //Serve static assets if in production (static assets is the build folder)
 if(process.env.NODE_ENV === 'production'){
