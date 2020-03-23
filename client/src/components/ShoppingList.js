@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import {Container, ListGroup, ListGroupItem, Button} from 'reactstrap'
-import {CSSTransition, TransitionGroup} from 'react-transition-group'
+import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 // import {v4 as uuid} from 'uuid'
-import {connect} from 'react-redux'
-import {getItems, deleteItems} from '../actions/itemActions'
+import { connect } from 'react-redux'
+import { getItems, deleteItems } from '../actions/itemActions'
 
 export class ShoppingList extends Component {
 
@@ -17,19 +17,19 @@ export class ShoppingList extends Component {
   //   ]
   // }
 
-  componentDidMount(){
+  componentDidMount() {
     //this is where we would call any actions
     this.props.getItems();
   }
 
-  onDeleteClick=(id)=>{
+  onDeleteClick = (id) => {
     //now we will call the action in the redux
     this.props.deleteItems(id)
   }
 
   render() {
 
-    const {items} = this.props.item //now this is where our state lives
+    const { items } = this.props.item //now this is where our state lives
     //const {items} = this.state;
 
     return (
@@ -51,12 +51,11 @@ export class ShoppingList extends Component {
           <ListGroup>
             <TransitionGroup className='shopping-list'>
               {/**mapping through the items now */
-                items.map(({_id, name})=>(
+                items.map(({ _id, name }) => (
                   <CSSTransition key={_id} timeout={500} classNames='fade'>
                     <ListGroupItem>
-                      <Button className='remove-btn' color='danger' size='sm' onClick={this.onDeleteClick.bind(this, _id)}>
-                      &times;
-                      </Button>
+                      {this.props.isAuthenticated ? <Button className='remove-btn' color='danger' size='sm' onClick={this.onDeleteClick.bind(this, _id)}>&times;
+                      </Button> : null}
                       {name}
                     </ListGroupItem>
                   </CSSTransition>
@@ -71,11 +70,12 @@ export class ShoppingList extends Component {
   }
 }
 
-const mapStateToProps = state=>({
+const mapStateToProps = state => ({
   //this item will be the same name as that in the rootReducer
-  item: state.item
+  item: state.item,
+  isAuthenticated: state.auth.isAuthenticated
 })
 
 //now for redux instead of this we will use connect
 //connect will take the mapStateToProps and any actions that we want to use
-export default connect(mapStateToProps, {getItems, deleteItems})(ShoppingList)
+export default connect(mapStateToProps, { getItems, deleteItems })(ShoppingList)

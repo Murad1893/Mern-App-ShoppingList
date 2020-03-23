@@ -32,6 +32,7 @@ export default function (state = initialState, action) {
       }
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
+      localStorage.setItem('token', action.payload.token) //token will now be sent as the payload
       return {
         ...state,
         ...action.payload, //now we will bring in the entire payload, user + token
@@ -43,6 +44,7 @@ export default function (state = initialState, action) {
     case LOGOUT_SUCCESS:
     case LOGIN_FAIL:
     case REGISTER_FAIL:
+      localStorage.removeItem('token') //we are also removing any token that is in the local storage
       return {
         ...state,
         token: null,
